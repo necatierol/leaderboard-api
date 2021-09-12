@@ -1,1 +1,15 @@
-node_modules
+# OSX Files
+.DS_Store
+
+# NPM directories and folders
+node_modules/
+.npm
+package-lock.json
+
+# Optional eslint cache
+.eslintcache
+
+# Deploy
+deploy/env/
+deploy/deploy.retry
+deploy/provision.retry
