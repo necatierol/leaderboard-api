@@ -1,4 +1,5 @@
 import Leaderboard from "../../libs/leaderboard";
+import share from "../../libs/prizePool/share";
 import models from '../../models';
 
 
@@ -6,6 +7,10 @@ const settings = {
   getLeaderboard: {
     method: 'get',
     path: '/leaderboards'
+  },
+  finish: {
+    method: 'put',
+    path: '/leaderboards/finish'
   }
 };
 
@@ -62,6 +67,15 @@ class LeaderboardService {
       body
     };
   };
+
+  finish = async (req) => {
+    await share();
+
+    return {
+      status: 200,
+      body: {}
+    };
+  }
 }
 
 export default {

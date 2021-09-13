@@ -11,6 +11,7 @@ export const surrounding = {
 
 export const USER_COUNT = 100;
 
+
 export default {
   PERIOD: periods.WEEKLY,
   USER_COUNT,
