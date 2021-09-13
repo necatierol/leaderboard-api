@@ -21,7 +21,9 @@ class UserService {
   online = async (req) => {
     const { body } = req;
 
-    let user = await Models.User.findOne({ userId: Number(body.userId) }).exec();
+    let user = await Models.User
+      .findOne({ userId: Number(body.userId) }, { _id: 0, __v: 0 });
+    
     if (!user) {
       try {
         user = await Models.User.create(body);
