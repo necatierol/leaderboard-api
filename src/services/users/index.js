@@ -1,5 +1,7 @@
 import Models from '../../models';
 
+import calculateScore from '../../libs/score/calculate';
+
 import validators from './validators';
 
 
@@ -40,6 +42,26 @@ class UserService {
       body: user.toJSON()
     };
   };
+
+  updateScore = async (req) => {
+    const { userScore, prizePoolScore } = calculateScore();
+
+    await Promise.all([
+      (async() => {
+        await Models.User
+          .updateOne({ userId: Number(req.params.id) }, { $inc: { score: userScore } });
+      })(),
+      (async() => {
+        await Models.PrizePool
+          .updateOne({}, { $inc: { total: prizePoolScore } }, { upsert: true });
+      })()
+    ]);
+    
+    return {
+      status: 200,
+      body: {}
+    };
+  }
 }
 
 export default {
