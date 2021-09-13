@@ -1,10 +1,13 @@
 import User from './user';
+import PrizePool from './prizePool';
 
 
 export {
-  User
+  User,
+  PrizePool
 };
 
 export default {
-  User
+  User,
+  PrizePool
 };
