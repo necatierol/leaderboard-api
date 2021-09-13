@@ -1,15 +1,54 @@
+import Leaderboard from "../../libs/leaderboard";
+import models from '../../models';
+
+
 const settings = {
-  getWeeklyLeaderboard: {
+  getLeaderboard: {
     method: 'get',
-    path: '/leaderboards/weekly'
+    path: '/leaderboards'
   }
 };
 
 const defaultQueries = {};
 
 class LeaderboardService {
-  getWeeklyLeaderboard = async (req) => {
-    const { body } = req;
+  getLeaderboard = async (req) => {
+    const { userId } = req.query;
+    const user = await models.User
+      .findOne({ userId: Number(userId) }, { _id: 0, __v: 0})
+      .lean();
+
+    let leaderboard;
+    let beforeUsers;
+    let afterUsers;
+    let currentUserRank;
+    await Promise.all([
+      (async() => {
+        currentUserRank = await Leaderboard.getUserRank(user);
+      })(),
+      (async() => {
+        leaderboard = await Leaderboard.getLeaderboard();
+      })(),
+      (async() => {
+        beforeUsers = await Leaderboard.getBeforeUsers(user);
+      })(),
+      (async() => {
+        afterUsers = await Leaderboard.getAfterUsers(user)
+      })(),
+    ]);
+
+    const body = {
+      leaderboard,
+      currentUser: {
+        ...user,
+        rank: currentUserRank,
+        rankDiff: user.lastRank == 0 ? 0 : user.lastRank - currentUserRank
+      },
+      beforeUsers: beforeUsers
+        .map((u, idx) => ({...u, rank: currentUserRank - beforeUsers.length + idx })),
+      afterUsers: afterUsers
+        .map((u, idx) => ({...u, rank: currentUserRank + idx + 1 }))
+    }
 
     return {
       status: 200,
