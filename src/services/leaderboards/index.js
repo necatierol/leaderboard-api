@@ -37,12 +37,19 @@ class LeaderboardService {
       })(),
     ]);
 
+    let rankDiff = '0';
+    if (user.lastRank != 0) {
+      const diff = user.lastRank - currentUserRank;
+      if (diff > 0) rankDiff = `+${diff}`;
+      else rankDiff = diff.toString();
+    }
+
     const body = {
       leaderboard,
       currentUser: {
         ...user,
-        rank: currentUserRank,
-        rankDiff: user.lastRank == 0 ? 0 : user.lastRank - currentUserRank
+        rankDiff,
+        rank: currentUserRank
       },
       beforeUsers: beforeUsers
         .map((u, idx) => ({...u, rank: currentUserRank - beforeUsers.length + idx })),
