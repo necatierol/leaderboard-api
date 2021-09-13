@@ -1,4 +1,5 @@
 import Models from '../../models';
+import CacheLib from '../../libs/redis';
 
 import calculateScore from '../../libs/score/calculate';
 
@@ -45,17 +46,21 @@ class UserService {
 
   updateScore = async (req) => {
     const { userScore, prizePoolScore } = calculateScore();
+    const userId = Number(req.params.id);
 
+    let user;
     await Promise.all([
       (async () => {
-        await Models.User
-          .updateOne({ userId: Number(req.params.id) }, { $inc: { score: userScore } });
+        user = await Models.User
+          .findOneAndUpdate({ userId }, { $inc: { score: userScore } });
       })(),
       (async () => {
         await Models.PrizePool
           .updateOne({}, { $inc: { total: prizePoolScore } }, { upsert: true });
       })()
     ]);
+
+    CacheLib.checkAndResetLeaderboard(user);
 
     return {
       status: 200,

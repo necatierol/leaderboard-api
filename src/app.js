@@ -5,6 +5,7 @@ import router from './core/router';
 
 import errorHandling from './middlewares/errorHandling';
 import connectMongoose from './core/mongoose';
+import connectRedis from './core/redis';
 
 
 const port = process.env.PORT || 3000;
