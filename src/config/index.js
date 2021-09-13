@@ -1,6 +1,7 @@
 import morgan from './morgan';
+import mongoose from './mongoose';
 
 
-export { morgan };
+export { morgan, mongoose };
 
-export default { morgan };
+export default { morgan, mongoose };

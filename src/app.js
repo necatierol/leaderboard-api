@@ -4,10 +4,12 @@ import expressCore from './core/express';
 import router from './core/router';
 
 import errorHandling from './middlewares/errorHandling';
+import connectMongoose from './core/mongoose';
 
 
-const app = express();
 const port = process.env.PORT || 3000;
+const app = express();
+connectMongoose();
 
 app.all('/', (req, res) => {
   res.send('');
