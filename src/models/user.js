@@ -16,6 +16,10 @@ const User = new mongoose.Schema({
   age: {
     type: Number
   },
+  lastRank: {
+    type: Number,
+    default: 0
+  },
   updatedAt: {
     type: Date,
     default: Date.now
