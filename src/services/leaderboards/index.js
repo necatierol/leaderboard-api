@@ -1,6 +1,7 @@
-import Leaderboard from "../../libs/leaderboard";
-import share from "../../libs/prizePool/share";
-import models from '../../models';
+import Leaderboard from '../../libs/leaderboard';
+import Models from '../../models';
+
+import share from '../../libs/prizePool/share';
 
 
 const settings = {
@@ -19,8 +20,8 @@ const defaultQueries = {};
 class LeaderboardService {
   getLeaderboard = async (req) => {
     const { userId } = req.query;
-    const user = await models.User
-      .findOne({ userId: Number(userId) }, { _id: 0, __v: 0})
+    const user = await Models.User
+      .findOne({ userId: Number(userId) }, { _id: 0, __v: 0 })
       .lean();
 
     let leaderboard;
@@ -28,22 +29,22 @@ class LeaderboardService {
     let afterUsers;
     let currentUserRank;
     await Promise.all([
-      (async() => {
+      (async () => {
         currentUserRank = await Leaderboard.getUserRank(user);
       })(),
-      (async() => {
+      (async () => {
         leaderboard = await Leaderboard.getLeaderboard();
       })(),
-      (async() => {
+      (async () => {
         beforeUsers = await Leaderboard.getBeforeUsers(user);
       })(),
-      (async() => {
-        afterUsers = await Leaderboard.getAfterUsers(user)
-      })(),
+      (async () => {
+        afterUsers = await Leaderboard.getAfterUsers(user);
+      })()
     ]);
 
     let rankDiff = '0';
-    if (user.lastRank != 0) {
+    if (user.lastRank !== 0) {
       const diff = user.lastRank - currentUserRank;
       if (diff > 0) rankDiff = `+${diff}`;
       else rankDiff = diff.toString();
@@ -57,10 +58,10 @@ class LeaderboardService {
         rank: currentUserRank
       },
       beforeUsers: beforeUsers
-        .map((u, idx) => ({...u, rank: currentUserRank - beforeUsers.length + idx })),
+        .map((u, idx) => ({ ...u, rank: currentUserRank - beforeUsers.length + idx })),
       afterUsers: afterUsers
-        .map((u, idx) => ({...u, rank: currentUserRank + idx + 1 }))
-    }
+        .map((u, idx) => ({ ...u, rank: currentUserRank + idx + 1 }))
+    };
 
     return {
       status: 200,

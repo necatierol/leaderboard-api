@@ -5,7 +5,7 @@ import { USER_COUNT } from '../../constants/leaderboard';
 
 const calculateRankDiff = (last, current) => {
   let rankDiff = '0';
-  if (last != 0) {
+  if (last !== 0) {
     const diff = last - current;
     if (diff > 0) rankDiff = `+${diff}`;
     else rankDiff = diff.toString();
@@ -14,7 +14,7 @@ const calculateRankDiff = (last, current) => {
   return rankDiff;
 };
 
-export default async() => {
+export default async () => {
   const users = await models.User
     .find({}, { _id: 0, __v: 0 })
     .sort({ score: -1 })

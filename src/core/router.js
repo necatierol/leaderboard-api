@@ -18,7 +18,7 @@ const getValidationMiddleware = (validation) => ((req, res, next) => {
       res.status(400).send({
         error: {
           name: error.name,
-          details: error.details.map(d => d.message)
+          details: error.details.map((d) => d.message)
         }
       });
       return;

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 const User = new mongoose.Schema({
   userId: {
     type: Number,
@@ -30,7 +31,7 @@ const User = new mongoose.Schema({
 User.index({ score: 1 }, { background: true });
 User.index({ userId: 1 }, { background: true });
 
-User.pre('save', function(next) {
+User.pre('save', function (next) {
   this.updatedAt = Date.now();
   return next();
 });

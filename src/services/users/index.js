@@ -25,7 +25,7 @@ class UserService {
 
     let user = await Models.User
       .findOne({ userId: Number(body.userId) }, { _id: 0, __v: 0 });
-    
+
     if (!user) {
       try {
         user = await Models.User.create(body);
@@ -47,16 +47,16 @@ class UserService {
     const { userScore, prizePoolScore } = calculateScore();
 
     await Promise.all([
-      (async() => {
+      (async () => {
         await Models.User
           .updateOne({ userId: Number(req.params.id) }, { $inc: { score: userScore } });
       })(),
-      (async() => {
+      (async () => {
         await Models.PrizePool
           .updateOne({}, { $inc: { total: prizePoolScore } }, { upsert: true });
       })()
     ]);
-    
+
     return {
       status: 200,
       body: {}
