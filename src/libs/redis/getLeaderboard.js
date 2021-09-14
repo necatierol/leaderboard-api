@@ -6,5 +6,7 @@ export default async () => {
     const leaderboard = await redisClient.getAsync('leaderboard');
 
     return JSON.parse(leaderboard);
-  } else return null;
+  }
+
+  return null;
 };

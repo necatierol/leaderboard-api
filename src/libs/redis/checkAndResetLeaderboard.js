@@ -1,13 +1,15 @@
 import DataLib from '../mongo';
-import CacheLib from '.';
+
+import findUserInLeaderboard from './findUserInLeaderboard';
+import setLeaderboard from './setLeaderboard';
 
 import { USER_COUNT } from '../../constants/leaderboard';
 
 
 export default async (userId, rank) => {
-  let userCache = await CacheLib.findUserInLeaderboard(userId);;
+  const userCache = await findUserInLeaderboard(userId);
 
   if (rank !== 0 && rank <= USER_COUNT && (!userCache || userCache.rank !== rank)) {
-    CacheLib.setLeaderboard(await DataLib.getLeaderboard());
+    setLeaderboard(await DataLib.getLeaderboard());
   }
 };

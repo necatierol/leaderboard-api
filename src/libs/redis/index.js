@@ -11,7 +11,7 @@ export {
   findUserInLeaderboard,
   destroyLeaderboard,
   checkAndResetLeaderboard
-}
+};
 
 export default {
   getLeaderboard,
@@ -19,4 +19,4 @@ export default {
   findUserInLeaderboard,
   destroyLeaderboard,
   checkAndResetLeaderboard
-}
+};

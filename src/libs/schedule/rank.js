@@ -4,7 +4,7 @@ import Models from '../../models';
 export default async () => {
   let dates = await Models.Schedule.findOne({}).lean();
   if (!dates) {
-    await Models.Schedule.updateOne({}, { $set: { rank: Date.now() } }, { upsert: true })
+    await Models.Schedule.updateOne({}, { $set: { rank: Date.now() } }, { upsert: true });
     dates = { rank: Date.now() };
   }
   const rankDate = new Date(dates.rank).toLocaleDateString();

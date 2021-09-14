@@ -11,7 +11,7 @@ export default async () => {
     leaderboard = await CacheLib.getLeaderboard();
     if (!leaderboard) {
       leaderboard = await getLeaderboard();
-      
+
       CacheLib.setLeaderboard(leaderboard);
     }
   } else {

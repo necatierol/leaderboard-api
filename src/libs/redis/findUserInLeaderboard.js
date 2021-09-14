@@ -9,5 +9,7 @@ export default async (userId) => {
     const users = JSON.parse(leaderboard);
 
     return users.find((u) => u.userId === userId);
-  } else return null;
+  }
+
+  return null;
 };

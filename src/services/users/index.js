@@ -57,7 +57,7 @@ class UserService {
     if (Math.abs(now - updatedTime) < PERIOD) {
       return {
         status: 429,
-        body: { error: { details: ['Too Many Requests'] }}
+        body: { error: { details: ['Too Many Requests'] } }
       };
     }
 

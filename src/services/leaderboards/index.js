@@ -70,7 +70,7 @@ class LeaderboardService {
     };
   };
 
-  finish = async (req) => {
+  finish = async (req) => { // eslint-disable-line
     await sharePrize();
 
     return {
