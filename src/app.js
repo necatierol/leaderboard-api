@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 
 import expressCore from './core/express';
@@ -32,7 +33,7 @@ app.use(errorHandling);
 app.listen(
   port,
   () => {
-    // eslint-disable-next-line
     console.log(`Application run at http://localhost:${port}`);
+    console.log(`Api documentation: http://localhost:${port}/api/v1/doc`);
   },
 );
