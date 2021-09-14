@@ -16,6 +16,7 @@
     "url": "git+ssh://git@github.com/necatierol/leaderboard-api.git"
   },
   "dependencies": {
+    "amqplib": "^0.8.0",
     "babel-core": "^6.26.3",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",

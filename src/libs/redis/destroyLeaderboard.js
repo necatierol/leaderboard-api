@@ -1,6 +1,6 @@
-import redisClient from '../../core/redis';
+import redis from '../../core/redis';
 
 
 export default async () => {
-  if (redisClient.connected) redisClient.del('leaderboard');
+  if (redis.redisClient.connected) redis.redisClient.del('leaderboard');
 };

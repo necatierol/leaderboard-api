@@ -1,8 +1,8 @@
-import redisClient from '../../core/redis';
+import redis from '../../core/redis';
 
 
 export default async (leaderboard) => {
-  if (redisClient.connected) {
-    await redisClient.setAsync('leaderboard', JSON.stringify(leaderboard));
+  if (redis.redisClient.connected) {
+    await redis.redisClient.setAsync('leaderboard', JSON.stringify(leaderboard));
   }
 };

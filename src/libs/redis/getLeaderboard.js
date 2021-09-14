@@ -1,9 +1,9 @@
-import redisClient from '../../core/redis';
+import redis from '../../core/redis';
 
 
 export default async () => {
-  if (redisClient.connected) {
-    const leaderboard = await redisClient.getAsync('leaderboard');
+  if (redis.redisClient.connected) {
+    const leaderboard = await redis.redisClient.getAsync('leaderboard');
 
     return JSON.parse(leaderboard);
   }

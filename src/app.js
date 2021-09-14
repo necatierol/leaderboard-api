@@ -11,20 +11,27 @@ import cron from './core/cron';
 
 import doc from './core/swagger';
 
+import AMQP from './libs/amqp';
+
 
 const port = process.env.PORT || 3000;
 const app = express();
+
+
 connectMongoose();
 redis.connect();
 cron();
+
+AMQP.build()
+  .then(() => console.log('RabbitMQ Connected!')) // eslint-disable-line
+  .catch((error) => console.error('RabbitMQ Error', error)); // eslint-disable-line
+
 
 app.all('/', (req, res) => {
   res.send('');
 });
 
-
 expressCore.forEach((middleware) => app.use(middleware));
-
 
 app.use('/api/v1/doc', doc.swaggerUI.serve, doc.swaggerUI.setup(doc.swaggerDocument));
 app.use('/api/v1/', router);
