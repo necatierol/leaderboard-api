@@ -82,4 +82,22 @@ To run the project, Follow the following command:
 Lint your Javascript Files
 
     $ npm run lint
+    
+### Docker
+
+* Docker
+* Docker compose
+
+Docker image building
+
+    $ docker build --rm -t leaderboard_api .
+
+To run the project, Follow the following command:
+
+    $ docker-compose up
+
+Or run project as a background task
+
+    $ docker-compose up --detach
+
 
