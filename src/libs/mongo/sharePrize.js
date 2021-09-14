@@ -3,7 +3,7 @@ import Models from '../../models';
 import { USER_COUNT } from '../../constants/leaderboard';
 import { PRIZE_POOL } from '../../constants/score';
 
-import getLeaderboard from '../leaderboard/getLeaderboard';
+import getLeaderboard from '../mongo/getLeaderboard';
 
 
 export default async () => {
