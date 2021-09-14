@@ -28,16 +28,16 @@ export default async () => {
     .values(PRIZE_POOL.USER_PERCENTAGES).reduce((a, b) => a + b, 0));
 
   await Promise.all(users.map(async (user) => {
-    let score = 0;
+    let money = 0;
     if (PRIZE_POOL.USER_PERCENTAGES[user.rank]) {
-      score = (totalPrize / 100) * PRIZE_POOL.USER_PERCENTAGES[user.rank];
+      money = (totalPrize / 100) * PRIZE_POOL.USER_PERCENTAGES[user.rank];
     } else {
-      score = parseFloat(
+      money = parseFloat(
         ((otherUserPrize / totalPercentage) * (USER_COUNT - user.rank + 1)).toFixed(3)
       );
     }
 
-    await Models.User.updateOne({ userId: user.userId }, { $inc: { score } });
+    await Models.User.updateOne({ userId: user.userId }, { $inc: { money } });
   }));
 
   await Models.PrizePool.updateOne({}, { $set: { total: 0 } });

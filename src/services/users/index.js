@@ -65,6 +65,7 @@ class UserService {
       (async () => {
         if (user.lastRank === 0) user.lastRank = await getUserRank(user.score);
         user.score += userScore;
+        user.money += userScore;
 
         await user.save();
       })(),

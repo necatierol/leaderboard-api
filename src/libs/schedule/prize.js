@@ -13,7 +13,8 @@ export default async () => {
 
   
   if (prizeDate !== today) {
-    sharePrize();
+    await sharePrize();
+    await Models.User.updateMany({}, { $set: { score: 0 } });
   } else {
     await Models.Schedule.updateOne({}, { $set: { prize: Date.now() } }, { upsert: true });
   }

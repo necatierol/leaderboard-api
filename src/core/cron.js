@@ -6,7 +6,7 @@ import ScheduleLib from '../libs/schedule';
 
 export default () => {
   cron.schedule(cronConfig.PRIZE_POOL_LIFECYLE, () => {
-    console.log('Leaderboard lifecyle');
+    console.log('Prize pool lifecyle');
     ScheduleLib.prize();
   });
   
