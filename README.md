@@ -10,7 +10,7 @@ You can access the APi document from http://localhost:3000/api/v1/doc after runn
 
 Sistemde iki adet veritabanı sistemi kullanılır. Bunlardan birincisi gerçek verileri tutan mongodb, ikincisi de hesaplanmış olarak leaderboard tutan redis'tir. 
 
-Skor isteği yapıldığında, kullanıcı kayıtlı değilse skoru hesaplanarak yeni kullanıcı eklenir. Eğer kayıtlıysa skoru hesaplanarak skor ve para değerleri güncellenir. Belirli bir arttırım değerinde -ödül havuzunun yüzdelik değeri düşerek- score ve para değerleri arttırılır. Ödül havuzu için düşülen değer ile de ödül havuzu değer arttırılır.
+Skor isteği yapıldığında, önce redis'e eklenir ve redis'e eklendikten sonra rabbimq kuyruğuna gönderilir. Rabbitmq üzerinden mongodb de kullanıcı kayıtlı değilse skoru hesaplanarak yeni kullanıcı eklenir. Eğer kayıtlıysa skoru hesaplanarak skor ve para değerleri güncellenir. Belirli bir arttırım değerinde -ödül havuzunun yüzdelik değeri düşerek- score ve para değerleri arttırılır. Ödül havuzu için düşülen değer ile de ödül havuzu değer arttırılır. Kullanıcı skor işlemleri tamamlandıktan sonra redis'ten silinir.
 
 Gün bitiminde kullanıcıların gün içi değişimleri için tutulan önceki günün rank değeri tüm kullanıcılarda sıfırlanır. Kullanıcının sonraki gün ilk score isteğinde önceki gün rank değeri, önceki gündeki son rank değeri hesaplanarak yeniden oluşturulur. Leaderboard cache'i silinir.
 
