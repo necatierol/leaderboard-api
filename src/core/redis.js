@@ -11,13 +11,17 @@ const { host, port } = config[env] || config.development;
 
 const redisClient = redis.createClient({ host, port });
 
-redisClient.on('connect', function () {
-  console.log('Redis connected');
-});
+const connect = () => {
+  redisClient.on('connect', function () {
+    console.log('Redis connected');
+  });
+  
+  redisClient.on('error', err => {
+    console.log('Error ' + err);
+  });
+}
 
-redisClient.on('error', err => {
-  console.log('Error ' + err);
-});
-
-
-export default redisClient;
+export default {
+  connect,
+  redisClient
+};
