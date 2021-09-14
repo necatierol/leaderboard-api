@@ -23,3 +23,8 @@ services:
          - 27017:27017
       volumes:
          - /var/lib/mongo:/data/db
+   rabbitmq:
+      image: rabbitmq:management
+      restart: always
+      volumes:
+         - /var/lib/rabbitmq:/var/lib/rabbitmq

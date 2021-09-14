@@ -3,6 +3,7 @@ import setLeaderboard from './setLeaderboard';
 import findUserInLeaderboard from './findUserInLeaderboard';
 import destroyLeaderboard from './destroyLeaderboard';
 import checkAndResetLeaderboard from './checkAndResetLeaderboard';
+import insertUserScore from './insertUserScore';
 
 
 export {
@@ -10,7 +11,8 @@ export {
   setLeaderboard,
   findUserInLeaderboard,
   destroyLeaderboard,
-  checkAndResetLeaderboard
+  checkAndResetLeaderboard,
+  insertUserScore
 };
 
 export default {
@@ -18,5 +20,6 @@ export default {
   setLeaderboard,
   findUserInLeaderboard,
   destroyLeaderboard,
-  checkAndResetLeaderboard
+  checkAndResetLeaderboard,
+  insertUserScore
 };
