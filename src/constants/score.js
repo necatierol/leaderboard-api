@@ -1,4 +1,4 @@
-export const PERIOD = 30000; // milisecond
+export const PERIOD = 1000; // milisecond
 
 export const INCREMENTAL_SCORE_VALUE = 1;
 
