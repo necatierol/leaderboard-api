@@ -1,0 +1,169 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "leaderboard-api",
+    "description": "Leaderboard API in NodeJs"
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user in system",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "body",
+            "description": "user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/api/v1/users/{userId}/score": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Score auto-increment request",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "userId",
+          "type": "number"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "429": {
+            "description": "To many requests"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{userId}/leaderboard": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get leaderboard, current user, users before and after current user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "userId",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Leaderboard"
+            }
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number"
+        },
+        "username": {
+          "type": "string"
+        },
+        "money": {
+          "type": "number"
+        },
+        "age": {
+          "type": "number"
+        }
+      }
+    },
+    "UserDetail": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "number" },
+        "username":{ "type": "string" },
+        "age": { "type": "number" },
+        "score": { "type": "number" },
+        "money": { "type": "number"},
+        "rank": { "type": "number"},
+        "lastRank": { "type": "number"},
+        "rankDiff": { "type": "string"},
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Leaderboard": {
+      "type": "object",
+      "properties": {
+        "leaderboard": {
+          "type": "array",
+          "items": {
+            "$ref": "#definitions/UserDetail"
+          }
+        },
+        "currentUser": {
+          "$ref": "#definitions/UserDetail"
+        },
+        "beforeUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#definitions/UserDetail"
+          }
+        },
+        "afterUsers": {
+          "type": "array",
+          "items": {
+            "$ref": "#definitions/UserDetail"
+          }
+        }
+      }
+    }
+  }
+}
