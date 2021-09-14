@@ -81,26 +81,33 @@ class UserService {
     let user = await Models.User.findOne({ userId: Number(req.body.userId) });
 
     if (!user) {
-      user = await Models.User.create(req.body);
+      const { body } = req;
+      body.score = userScore;
+      body.money += userScore;
+
+      user = await Models.User.create(body);
     } else {
       const updatedTime = new Date(user.updatedAt).getTime();
       const now = new Date().getTime();
-  
+
       if (Math.abs(now - updatedTime) < PERIOD) {
         return {
           status: 429,
           body: { error: { details: ['Too Many Requests'] } }
         };
       }
+
+      if (user.lastRank === 0) user.lastRank = await getUserRank(user.score);
+      user.score += userScore;
+      user.money += userScore;
+
+      await user.save();
     }
 
     await Promise.all([
       (async () => {
-        if (user.lastRank === 0) user.lastRank = await getUserRank(user.score);
-        user.score += userScore;
-        user.money += userScore;
-
-        await user.save();
+        const userNewRank = await getUserRank(user.score);
+        CacheLib.checkAndResetLeaderboard(user.userId, userNewRank);
       })(),
       (async () => {
         await Models.PrizePool
@@ -108,8 +115,6 @@ class UserService {
       })()
     ]);
 
-    const userNewRank = await getUserRank(user.score);
-    CacheLib.checkAndResetLeaderboard(user.userId, userNewRank);
 
     return {
       status: 200,
