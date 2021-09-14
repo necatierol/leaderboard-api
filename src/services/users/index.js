@@ -11,7 +11,7 @@ import { PERIOD } from '../../constants/score';
 
 
 const settings = {
-  online: {
+  score: {
     method: 'post',
     path: '/users',
     validation: validators.online
@@ -19,39 +19,12 @@ const settings = {
   getLeaderboard: {
     method: 'get',
     path: '/users/:id/leaderboard'
-  },
-  updateScore: {
-    method: 'put',
-    path: '/users/:id/score'
   }
 };
 
 const defaultQueries = {};
 
 class UserService {
-  online = async (req) => {
-    const { body } = req;
-
-    let user = await Models.User
-      .findOne({ userId: Number(body.userId) }, { _id: 0, __v: 0 });
-
-    if (!user) {
-      try {
-        user = await Models.User.create(body);
-      } catch (error) {
-        return {
-          status: 500,
-          body: { error }
-        };
-      }
-    }
-
-    return {
-      status: 200,
-      body: user.toJSON()
-    };
-  };
-
   getLeaderboard = async (req) => {
     const user = await Models.User
       .findOne({ userId: Number(req.params.id) }, { _id: 0, __v: 0 })
@@ -102,19 +75,23 @@ class UserService {
     };
   }
 
-  updateScore = async (req) => {
+  score = async (req) => {
     const { userScore, prizePoolScore } = calculateScore();
 
-    const user = await Models.User.findOne({ userId: Number(req.params.id) });
+    let user = await Models.User.findOne({ userId: Number(req.body.userId) });
 
-    const updatedTime = new Date(user.updatedAt).getTime();
-    const now = new Date().getTime();
-
-    if (Math.abs(now - updatedTime) < PERIOD) {
-      return {
-        status: 429,
-        body: { error: { details: ['Too Many Requests'] } }
-      };
+    if (!user) {
+      user = await Models.User.create(req.body);
+    } else {
+      const updatedTime = new Date(user.updatedAt).getTime();
+      const now = new Date().getTime();
+  
+      if (Math.abs(now - updatedTime) < PERIOD) {
+        return {
+          status: 429,
+          body: { error: { details: ['Too Many Requests'] } }
+        };
+      }
     }
 
     await Promise.all([

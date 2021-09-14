@@ -23,7 +23,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "Create a new user in system",
+        "summary": "Create a new user or update score exist user",
         "produces": [
           "application/json"
         ],
@@ -47,29 +47,6 @@
           },
           "400": {
             "description": "Failed. Bad post data."
-          }
-        }
-      }
-    },
-    "/api/v1/users/{userId}/score": {
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Score auto-increment request",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [{
-          "name": "userId",
-          "in": "path",
-          "required": true,
-          "description": "userId",
-          "type": "number"
-        }],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "429": {
             "description": "To many requests"
