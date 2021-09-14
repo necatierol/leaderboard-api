@@ -102,3 +102,9 @@ Or run project as a background task
     $ docker-compose up --detach
 
 
+-----
+
+Send 100.000 request
+
+    $ for ((i=1;i<=100000;i++)); do   curl http://localhost:3000/api/v1/users -X POST -H "Content-Type: application/json" -d '{"age": 30, "userId":'$i', "username":"user'$i'"}'; done
+
