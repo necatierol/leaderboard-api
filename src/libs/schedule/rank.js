@@ -1,4 +1,5 @@
 import Models from '../../models';
+import CacheLib from '../redis'
 
 
 export default async () => {
@@ -12,7 +13,7 @@ export default async () => {
 
   if (rankDate !== today) {
     await Models.User.updateMany({}, { $set: { lastRank: 0 } });
-  } else {
     await Models.Schedule.updateOne({}, { $set: { rank: Date.now() } }, { upsert: true });
+    await CacheLib.destroyLeaderboard();
   }
 };

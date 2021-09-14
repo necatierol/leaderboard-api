@@ -1,4 +1,6 @@
 import Models from '../../models';
+import CacheLib from '../redis';
+
 import sharePrize from '../mongo/sharePrize';
 
 
@@ -14,7 +16,7 @@ export default async () => {
   if (prizeDate !== today) {
     await sharePrize();
     await Models.User.updateMany({}, { $set: { score: 0 } });
-  } else {
     await Models.Schedule.updateOne({}, { $set: { prize: Date.now() } }, { upsert: true });
+    await CacheLib.destroyLeaderboard();
   }
 };
