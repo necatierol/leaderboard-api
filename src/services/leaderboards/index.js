@@ -2,7 +2,7 @@ import DataLib from '../../libs/mongo';
 import LeaderboardLib from '../../libs/leaderboard';
 import Models from '../../models';
 
-import share from '../../libs/prizePool/share';
+import sharePrize from '../../libs/mongo/sharePrize';
 
 
 const settings = {
@@ -31,7 +31,7 @@ class LeaderboardService {
     let currentUserRank;
     await Promise.all([
       (async () => {
-        currentUserRank = await DataLib.getUserRank(user);
+        currentUserRank = await DataLib.getUserRank(user.score);
       })(),
       (async () => {
         leaderboard = await LeaderboardLib.get();
@@ -71,7 +71,7 @@ class LeaderboardService {
   };
 
   finish = async (req) => {
-    await share();
+    await sharePrize();
 
     return {
       status: 200,

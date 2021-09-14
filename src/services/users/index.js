@@ -2,6 +2,7 @@ import Models from '../../models';
 import CacheLib from '../../libs/redis';
 
 import calculateScore from '../../libs/score/calculate';
+import getUserRank from '../../libs/mongo/getUserRank';
 
 import validators from './validators';
 
@@ -60,7 +61,13 @@ class UserService {
       })()
     ]);
 
-    CacheLib.checkAndResetLeaderboard(user);
+
+    const userRank = await getUserRank(user.score);
+    CacheLib.checkAndResetLeaderboard(user.userId, userRank);
+
+    if (user.lastRank === 0) {
+      await Models.User.updateOne({ userId }, { lastRank: userRank });
+    }
 
     return {
       status: 200,
