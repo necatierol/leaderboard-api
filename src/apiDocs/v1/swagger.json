@@ -40,10 +40,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Failed. Bad post data."
