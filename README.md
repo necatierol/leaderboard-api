@@ -65,6 +65,7 @@ Her pazartesi günü saat 00:00:00'da kullanıcı skorları sıfırlanır. Ödü
 * Node 16.6.2
 * MongoDB 4.4.6
 * Redis 6.2.5
+* RabbitMQ
 
 Clone the repository and:
 
