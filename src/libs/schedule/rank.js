@@ -1,5 +1,5 @@
 import Models from '../../models';
-import CacheLib from '../redis'
+import CacheLib from '../redis';
 
 
 export default async () => {
