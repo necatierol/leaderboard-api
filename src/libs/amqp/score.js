@@ -3,12 +3,14 @@ import removeUserScore from '../redis/removeUserScore';
 import updateUserScore from '../score/updateUserScore';
 
 
+const successStatus = [200, 429];
 AMQP.on('USER_SCORE', async (data, resolve, reject) => {
   try {
-    const status = await updateUserScore(data);
+    const { status } = await updateUserScore(data);
 
-    if (status) {
-      await removeUserScore(`user_${data.userId}`);
+    if (successStatus.indexOf(status) !== -1) {
+      await removeUserScore(`UserScore_${data.userId}_${data.createdAt}`);
+
       resolve();
     } else reject();
   } catch (error) {

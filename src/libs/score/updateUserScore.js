@@ -7,22 +7,23 @@ import getUserRank from '../mongo/getUserRank';
 import { PERIOD } from '../../constants/score';
 
 
-export default async (reqBody) => {
+export default async (userData) => {
   const { userScore, prizePoolScore } = calculateScore();
 
-  let user = await Models.User.findOne({ userId: Number(reqBody.userId) });
+  let user = await Models.User.findOne({ userId: Number(userData.userId) });
   if (!user) {
-    const body = { ...reqBody };
+    const body = { ...userData };
     body.score = userScore;
     body.money += userScore;
 
     user = await Models.User.create(body);
   } else {
     const updatedTime = new Date(user.updatedAt).getTime();
-    const now = new Date().getTime();
+    let now = new Date().getTime();
+    if (userData.createdAt) now = new Date(userData.createdAt).getTime();
 
     if (Math.abs(now - updatedTime) < PERIOD) {
-      return false;
+      return { status: 429 };
     }
 
     if (user.lastRank === 0) user.lastRank = await getUserRank(user.score);
@@ -42,5 +43,5 @@ export default async (reqBody) => {
     })()
   ]);
 
-  return true;
+  return { status: 200 };
 };

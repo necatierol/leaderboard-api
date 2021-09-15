@@ -1,10 +1,17 @@
 import redis from '../../core/redis';
-import score from '../amqp/score';
+import scoreQueue from '../amqp/score';
+import updateUserScore from '../score/updateUserScore';
 
 
 export default async (userData) => {
   if (redis.redisClient.connected) {
-    await redis.redisClient.setAsync(`user_${userData.userId}`, JSON.stringify(userData));
-    score(userData);
+    const createdAt = Date.now();
+    const data = { ...userData, createdAt };
+    const key = `UserScore_${data.userId}_${createdAt}`;
+
+    await redis.redisClient.setAsync(key, JSON.stringify(data));
+    scoreQueue(data);
+  } else {
+    await updateUserScore(userData);
   }
 };
